@@ -16,7 +16,7 @@ public class Piece {
      * @param cmd        Command to process (e.g., move, jump, idle, done)
      * @param cell2piece Mapping of board cells to list of pieces occupying them (for context)
      */
-    public void onCommand(Command cmd, Map<Moves.Pair, List<Piece>> cell2piece) {
+    public void onCommand(Command cmd, Map<Pair, List<Piece>> cell2piece) {
         // Delegate to current state to handle command and possibly return new state
         state = state.onCommand(cmd, cell2piece);
     }
@@ -27,7 +27,7 @@ public class Piece {
      * @param startMs The starting timestamp (milliseconds since game start)
      */
     public void reset(long startMs) {
-        Moves.Pair currentPos = state.physics.getCurrCell(); // Get current cell coordinates
+        Pair currentPos = state.physics.getCurrCell(); // Get current cell coordinates
         // Create a new idle command at current position and reset state accordingly
         state.reset(new Command(startMs, id, "idle", List.of(currentPos)));
     }
@@ -77,7 +77,7 @@ public class Piece {
      *
      * @return The current board cell as a Moves.Pair (row, col)
      */
-    public Moves.Pair currentCell() {
+    public Pair currentCell() {
         return state.physics.getCurrCell();
     }
 }

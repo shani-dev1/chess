@@ -46,7 +46,7 @@ public class GameFactory {
                     if (code.isEmpty()) continue;
 
                     // Create a piece object for this code at (row, col)
-                    Piece piece = pFactory.createPiece(code, new Moves.Pair(row, col));
+                    Piece piece = pFactory.createPiece(code, new Pair(row, col));
                     pieces.add(piece);
                 }
             }

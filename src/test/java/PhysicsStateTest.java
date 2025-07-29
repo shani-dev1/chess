@@ -28,9 +28,9 @@ public class PhysicsStateTest {
     void testIdlePhysicsProperties() {
         Board b = board(8);
         Physics.IdlePhysics phys = new Physics.IdlePhysics(b);
-        Command cmd = new Command(0, "P", "idle", List.of(new Moves.Pair(2,3)));
+        Command cmd = new Command(0, "P", "idle", List.of(new Pair(2,3)));
         phys.reset(cmd);
-        assertEquals(new Moves.Pair(2,3), phys.getCurrCell());
+        assertEquals(new Pair(2,3), phys.getCurrCell());
         assertNull(phys.update(100));
         assertTrue(phys.canCapture());
         assertTrue(phys.isMovementBlocker());
@@ -40,14 +40,14 @@ public class PhysicsStateTest {
     void testMovePhysicsFullCycle() {
         Board b = board(8);
         Physics.MovePhysics phys = new Physics.MovePhysics(b, 1.0); // 1 cell/sec
-        Command cmd = new Command(0, "P", "move", List.of(new Moves.Pair(0,0), new Moves.Pair(0,2)));
+        Command cmd = new Command(0, "P", "move", List.of(new Pair(0,0), new Moves.Pair(0,2)));
         phys.reset(cmd);
         assertNull(phys.update(1000));
         Command done = phys.update(2100);
         assertNotNull(done);
         assertEquals("done", done.type);
         phys.update(2200);
-        assertEquals(new Moves.Pair(0,2), phys.getCurrCell());
+        assertEquals(new Pair(0,2), phys.getCurrCell());
     }
 
     @Test
@@ -55,7 +55,7 @@ public class PhysicsStateTest {
         Board b = board(8);
         Physics.JumpPhysics jump = new Physics.JumpPhysics(b, 0.05);
         Physics.RestPhysics rest = new Physics.RestPhysics(b, 0.05);
-        Command start = new Command(0, "J", "jump", List.of(new Moves.Pair(1,1)));
+        Command start = new Command(0, "J", "jump", List.of(new Pair(1,1)));
         jump.reset(start);
         rest.reset(start);
         assertNull(jump.update(20));
@@ -80,7 +80,7 @@ public class PhysicsStateTest {
         idle.setTransition("jump", jump);
         jump.setTransition("done", idle);
         Piece piece = new Piece("PX", idle);
-        piece.onCommand(new Command(0, piece.id, "jump", List.of(new Moves.Pair(0,0))), null);
+        piece.onCommand(new Command(0, piece.id, "jump", List.of(new Pair(0,0))), null);
         assertSame(jump, piece.state);
         piece.update(20);
         assertSame(idle, piece.state);

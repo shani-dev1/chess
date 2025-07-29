@@ -27,7 +27,7 @@ public class Game {
     public final BlockingQueue<Command> userInputQueue = new LinkedBlockingQueue<>();
 
     // Map from board cells (coordinates) to pieces currently occupying them
-    public final Map<Moves.Pair, List<Piece>> pos = new HashMap<>();
+    public final Map<Pair, List<Piece>> pos = new HashMap<>();
 
     // Map from piece ID (string) to Piece object, for quick lookup
     public final Map<String, Piece> pieceById = new HashMap<>();
@@ -56,10 +56,10 @@ public class Game {
     // - no two pieces of the same side on the same cell
     // - both white and black kings exist on the board
     private boolean validate(List<Piece> pieces) {
-        Map<Moves.Pair, Character> occupantSide = new HashMap<>();
+        Map<Pair, Character> occupantSide = new HashMap<>();
         boolean wKing = false, bKing = false;
         for (Piece p : pieces) {
-            Moves.Pair cell = p.currentCell();
+            Pair cell = p.currentCell();
             char side = p.id.charAt(1); // 'W' or 'B' indicating white or black
             Character prev = occupantSide.get(cell);
             if (prev != null && prev == side) {
@@ -155,11 +155,11 @@ public class Game {
     // Resolve collisions: if multiple pieces occupy the same cell,
     // only the "winner" (most recent mover) remains, others removed if capturable
     public void _resolve_collisions() {
-        Map<Moves.Pair, List<Piece>> occupied = new HashMap<>();
+        Map<Pair, List<Piece>> occupied = new HashMap<>();
         for (Piece p : pieces) {
             occupied.computeIfAbsent(p.currentCell(), k -> new ArrayList<>()).add(p);
         }
-        for (Map.Entry<Moves.Pair, List<Piece>> entry : occupied.entrySet()) {
+        for (Map.Entry<Pair, List<Piece>> entry : occupied.entrySet()) {
             List<Piece> plist = entry.getValue();
             if (plist.size() < 2) continue; // No collision if less than 2 pieces
 

@@ -16,7 +16,7 @@ public class PhysicsFactory {
      * @param cfg Configuration parameters in JSON format, which can include speed and duration
      * @return A Physics instance appropriate for the given state
      */
-    public Physics create(Moves.Pair startCell, String stateName, JSONObject cfg) {
+    public Physics create(Pair startCell, String stateName, JSONObject cfg) {
         // Read the movement speed from config, default to 0.0 if missing
         double speed = cfg.optDouble("speed_m_per_sec", 0.0);
 

@@ -66,7 +66,7 @@ public class PieceFactory {
 
                 // Create physics behavior for the state
                 JSONObject physCfg = cfg.optJSONObject("physics") != null ? cfg.optJSONObject("physics") : new JSONObject();
-                Physics phys = physFactory.create(new Moves.Pair(0, 0), name, physCfg);
+                Physics phys = physFactory.create(new Pair(0, 0), name, physCfg);
 
                 // Create State object combining moves, graphics, and physics
                 State st = new State(moves, gfx, phys);
@@ -127,7 +127,7 @@ public class PieceFactory {
      * Creates a new Piece instance from a piece type code and starting cell.
      * Clones the state machine template and initializes it for the given cell.
      */
-    public Piece createPiece(String code, Moves.Pair cell) {
+    public Piece createPiece(String code, Pair cell) {
         State tmpl = templates.get(code);
         if (tmpl == null)
             throw new IllegalArgumentException("Unknown piece type " + code);
@@ -150,7 +150,7 @@ public class PieceFactory {
      * For each state, clones its moves, graphics, and creates new physics with the starting cell.
      * Reconstructs all transitions to link to cloned states.
      */
-    private State cloneStateMachine(State templateIdle, Moves.Pair cell) {
+    private State cloneStateMachine(State templateIdle, Pair cell) {
         Map<State, State> map = new HashMap<>();
         Deque<State> stack = new ArrayDeque<>();
         stack.push(templateIdle);

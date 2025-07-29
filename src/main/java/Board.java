@@ -71,10 +71,10 @@ public class Board {
     }
 
     // Same as mToCell, but returns a Moves.Pair object instead of array
-    public Moves.Pair mToCellPair(double xM, double yM) {
+    public Pair mToCellPair(double xM, double yM) {
         int col = (int) Math.round(xM / cellWM);
         int row = (int) Math.round(yM / cellHM);
-        return new Moves.Pair(row, col);
+        return new Pair(row, col);
     }
 
     /** Convert a cell (row, col) to its top-left corner in metres. */
@@ -83,7 +83,7 @@ public class Board {
     }
 
     // Overload of cellToM using Moves.Pair
-    public double[] cellToM(Moves.Pair cell) {
+    public double[] cellToM(Pair cell) {
         return cellToM(cell.r, cell.c);
     }
 

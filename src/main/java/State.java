@@ -47,7 +47,7 @@ public class State {
     }
 
     // Handle an incoming command (like "move", "jump", "idle")
-    public State onCommand(Command cmd, java.util.Map<Moves.Pair, java.util.List<Piece>> cell2piece) {
+    public State onCommand(Command cmd, java.util.Map<Pair, java.util.List<Piece>> cell2piece) {
         String key = cmd.type.toLowerCase();  // Normalize command type (e.g., "MOVE" → "move")
 
         // Get the next state for this command
@@ -61,8 +61,8 @@ public class State {
 
         // If it's a move command and legality needs to be checked...
         if ("move".equals(key) && moves != null && cmd.params != null && cmd.params.size() >= 2 && cell2piece != null) {
-            Moves.Pair src = (Moves.Pair) cmd.params.get(0);  // Source cell
-            Moves.Pair dst = (Moves.Pair) cmd.params.get(1);  // Destination cell
+            Pair src = (Pair) cmd.params.get(0);  // Source cell
+            Pair dst = (Pair) cmd.params.get(1);  // Destination cell
 
             // Reject if the source cell doesn't match where the piece actually is
             if (!src.equals(physics.getCurrCell())) {
@@ -70,7 +70,7 @@ public class State {
             }
 
             // Get occupied cells to check for legal path
-            java.util.Set<Moves.Pair> occupied = cell2piece.keySet();
+            java.util.Set<Pair> occupied = cell2piece.keySet();
             int[] srcArr = new int[]{src.r, src.c};
             int[] dstArr = new int[]{dst.r, dst.c};
 
