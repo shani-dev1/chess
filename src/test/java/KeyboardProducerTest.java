@@ -1,3 +1,6 @@
+import game.Game;
+import game.GameFactory;
+import keyBoard.KeyboardProducer;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;

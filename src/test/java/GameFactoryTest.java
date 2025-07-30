@@ -1,3 +1,8 @@
+import game.Game;
+import game.GameFactory;
+import img.Img;
+import grafix.Graphics;
+import grafix.GraphicsFactory;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;

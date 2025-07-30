@@ -152,8 +152,8 @@ instanceKlass sun/awt/windows/WComponentPeer$2
 instanceKlass java/awt/SequencedEvent$1
 instanceKlass sun/awt/AWTAccessor$SequencedEventAccessor
 instanceKlass  @bci sun/awt/windows/WWindowPeer displayChanged ()V 5 <appendix> member <vmtarget> ; # sun/awt/windows/WWindowPeer$$Lambda+0x000002135c08b008
-instanceKlass java/lang/WeakPairMap$Pair$Lookup
-instanceKlass java/lang/WeakPairMap$Pair
+instanceKlass java/lang/WeakPairMap$classes.Pair$Lookup
+instanceKlass java/lang/WeakPairMap$classes.Pair
 instanceKlass java/lang/WeakPairMap
 instanceKlass java/lang/Module$ReflectionData
 instanceKlass  @cpi sun/awt/windows/WWindowPeer 855 form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x000002135c0c0400
@@ -432,16 +432,16 @@ instanceKlass java/beans/PropertyChangeListener
 instanceKlass java/beans/ChangeListenerMap
 instanceKlass java/beans/PropertyChangeSupport
 instanceKlass javax/swing/SwingUtilities
-instanceKlass  @bci BuffImg show ()V 18 <appendix> member <vmtarget> ; # BuffImg$$Lambda+0x000002135c00dcb8
+instanceKlass  @bci img.BuffImg show ()V 18 <appendix> member <vmtarget> ; # img.BuffImg$$Lambda+0x000002135c00dcb8
 instanceKlass java/lang/Thread$ThreadNumbering
-instanceKlass KeyboardProcessor
+instanceKlass keyBoard.KeyboardProcessor
 instanceKlass java/util/concurrent/LinkedBlockingQueue$Node
 instanceKlass java/util/concurrent/BlockingQueue
 instanceKlass Game
-instanceKlass Command
-instanceKlass Piece
+instanceKlass classes.Command
+instanceKlass piece.Piece
 instanceKlass  @bci java/util/ArrayDeque copyElements (Ljava/util/Collection;)V 2 <appendix> member <vmtarget> ; # java/util/ArrayDeque$$Lambda+0x000002135c022d10
-instanceKlass State
+instanceKlass classes.State
 instanceKlass java/awt/image/MultiResolutionImage
 instanceKlass java/awt/RenderingHints
 instanceKlass java/awt/GraphicsDevice
@@ -465,7 +465,7 @@ instanceKlass java/awt/AlphaComposite
 instanceKlass sun/java2d/loops/XORComposite
 instanceKlass java/awt/Color
 instanceKlass java/awt/Paint
-instanceKlass java/awt/Graphics
+instanceKlass java/awt/grafix.Graphics
 instanceKlass sun/awt/ConstrainableGraphics
 instanceKlass sun/java2d/loops/GraphicsPrimitiveMgr
 instanceKlass sun/java2d/loops/GraphicsPrimitive
@@ -553,17 +553,17 @@ instanceKlass java/util/TimSort
 instanceKlass java/util/Arrays$LegacyMergeSort
 instanceKlass java/util/stream/ForEachOps$ForEachOp
 instanceKlass java/util/stream/ForEachOps
-instanceKlass  @bci Graphics <init> (Ljava/nio/file/Path;Ljava/awt/Dimension;ZD)V 61 <appendix> member <vmtarget> ; # Graphics$$Lambda+0x000002135c00c910
+instanceKlass  @bci grafix.Graphics <init> (Ljava/nio/file/Path;Ljava/awt/Dimension;ZD)V 61 <appendix> member <vmtarget> ; # grafix.Graphics$$Lambda+0x000002135c00c910
 instanceKlass java/util/stream/SortedOps
-instanceKlass  @bci Graphics <init> (Ljava/nio/file/Path;Ljava/awt/Dimension;ZD)V 44 <appendix> argL0 ; # Graphics$$Lambda+0x000002135c00c6b0
+instanceKlass  @bci grafix.Graphics <init> (Ljava/nio/file/Path;Ljava/awt/Dimension;ZD)V 44 <appendix> argL0 ; # grafix.Graphics$$Lambda+0x000002135c00c6b0
 instanceKlass  @bci java/nio/file/Files asUncheckedRunnable (Ljava/io/Closeable;)Ljava/lang/Runnable; 1 <appendix> member <vmtarget> ; # java/nio/file/Files$$Lambda+0x000002135c06a768
 instanceKlass java/nio/file/Files$2
-instanceKlass Graphics
-instanceKlass Moves$Pair
-instanceKlass  @bci Moves <init> (Ljava/nio/file/Path;II)V 48 <appendix> member <vmtarget> ; # Moves$$Lambda+0x000002135c00c000
-instanceKlass  @cpi Moves 214 form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x000002135c008000
+instanceKlass grafix.Graphics
+instanceKlass classes.Moves$classes.Pair
+instanceKlass  @bci classes.Moves <init> (Ljava/nio/file/Path;II)V 48 <appendix> member <vmtarget> ; # classes.Moves$$Lambda+0x000002135c00c000
+instanceKlass  @cpi classes.Moves 214 form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x000002135c008000
 instanceKlass java/io/BufferedReader$1
-instanceKlass Moves
+instanceKlass classes.Moves
 instanceKlass java/math/MathContext
 instanceKlass jdk/internal/vm/ThreadContainers
 instanceKlass java/util/concurrent/ForkJoinPool$DefaultForkJoinWorkerThreadFactory
@@ -627,11 +627,11 @@ instanceKlass sun/nio/fs/WindowsDirectoryStream
 instanceKlass java/nio/file/DirectoryStream
 instanceKlass java/nio/file/Files$AcceptAllFilter
 instanceKlass java/nio/file/DirectoryStream$Filter
-instanceKlass Physics
-instanceKlass PhysicsFactory
-instanceKlass GraphicsFactory
-instanceKlass PieceFactory
-instanceKlass Board
+instanceKlass physics.Physics
+instanceKlass board.BoardFactory.physics.PhysicsFactory
+instanceKlass grafix.GraphicsFactory
+instanceKlass piece.PieceFactory
+instanceKlass board.Board
 instanceKlass java/io/RandomAccessFile$1
 instanceKlass sun/awt/image/SurfaceManager
 instanceKlass sun/awt/image/SurfaceManager$ImageAccessor
@@ -807,8 +807,8 @@ instanceKlass java/awt/image/RenderedImage
 instanceKlass java/awt/Image
 instanceKlass  @cpi sun/awt/Win32FontManager 393 form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x000002135c004000
 instanceKlass java/awt/Composite
-instanceKlass BuffImg
-instanceKlass Img
+instanceKlass img.BuffImg
+instanceKlass img.img
 instanceKlass jdk/net/ExtendedSocketOptions$2
 instanceKlass jdk/net/ExtendedSocketOptions$PlatformSocketOptions
 instanceKlass jdk/net/ExtendedSocketOptions$ExtSocketOption
@@ -1507,7 +1507,7 @@ ciInstanceKlass java/lang/ClassLoader 1 1 1057 9 7 12 1 1 1 10 7 12 1 1 1 9 12 1
 staticfield java/lang/ClassLoader nocerts [Ljava/security/cert/Certificate; 0 [Ljava/security/cert/Certificate;
 staticfield java/lang/ClassLoader $assertionsDisabled Z 1
 instanceKlass java/awt/EventDispatchThread
-instanceKlass KeyboardProducer
+instanceKlass keyBoard.KeyboardProducer
 instanceKlass com/intellij/rt/execution/application/AppMainV2$1
 instanceKlass jdk/internal/misc/InnocuousThread
 instanceKlass java/lang/ref/Finalizer$FinalizerThread
@@ -1940,8 +1940,8 @@ instanceKlass java/util/Comparators$NaturalOrderComparator
 instanceKlass java/math/RoundingMode
 instanceKlass java/util/regex/Pattern$Qtype
 instanceKlass java/nio/file/AccessMode
-instanceKlass sun/java2d/StateTrackable$State
-instanceKlass sun/awt/AppContext$State
+instanceKlass sun/java2d/StateTrackable$classes.State
+instanceKlass sun/awt/AppContext$classes.State
 instanceKlass jdk/internal/logger/BootstrapLogger$LoggingBackend
 instanceKlass java/lang/System$Logger$Level
 instanceKlass sun/util/logging/PlatformLogger$Level
@@ -1961,7 +1961,7 @@ instanceKlass java/lang/invoke/VarHandle$AccessType
 instanceKlass java/lang/invoke/VarHandle$AccessMode
 instanceKlass java/lang/invoke/MethodHandleImpl$Intrinsic
 instanceKlass java/lang/classfile/AttributeMapper$AttributeStability
-instanceKlass jdk/internal/classfile/impl/AbstractPoolEntry$Utf8EntryImpl$State
+instanceKlass jdk/internal/classfile/impl/AbstractPoolEntry$Utf8EntryImpl$classes.State
 instanceKlass java/lang/classfile/TypeKind
 instanceKlass java/lang/invoke/LambdaForm$BasicType
 instanceKlass java/lang/invoke/LambdaForm$Kind
@@ -1975,7 +1975,7 @@ instanceKlass java/lang/module/ModuleDescriptor$Modifier
 instanceKlass java/io/File$PathStatus
 instanceKlass jdk/internal/module/ModuleBootstrap$IllegalNativeAccess
 instanceKlass java/lang/reflect/ClassFileFormatVersion
-instanceKlass java/lang/Thread$State
+instanceKlass java/lang/Thread$classes.State
 instanceKlass java/lang/module/ModuleDescriptor$Requires$Modifier
 ciInstanceKlass java/lang/Enum 1 1 204 9 7 12 1 1 1 9 12 1 1 10 7 12 1 1 1 9 12 1 10 7 12 1 1 1 100 1 10 10 12 1 1 10 12 1 100 1 10 10 7 12 1 1 10 12 1 1 18 12 1 1 10 100 12 1 1 1 10 12 1 1 11 7 12 1 1 1 100 1 8 1 10 12 1 100 1 100 1 10 8 1 10 12 1 1 10 12 1 1 8 1 10 12 1 10 100 1 8 1 10 10 12 1 1 10 100 12 1 1 1 100 1 100 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1 1 1 1 100 1 100 1 1 100 1 1 1 1 1 1 1 1 1 1 1 16 15 10 12 16 15 10 100 12 1 1 1 1 1 100 1 100 1 1
 ciInstanceKlass jdk/internal/loader/ClassLoaders 1 1 185 10 100 12 1 1 1 10 7 12 1 1 1 10 12 1 1 10 100 12 1 1 1 9 7 12 1 1 1 9 12 1 1 9 12 1 1 7 1 11 100 12 1 1 1 100 1 11 12 1 1 11 12 1 1 10 100 12 1 1 1 10 100 12 1 1 1 100 1 100 1 10 7 12 1 1 1 9 12 1 1 8 1 10 7 12 1 1 1 10 12 1 1 7 1 10 12 1 10 12 1 1 7 1 10 12 1 1 10 12 1 1 10 12 1 7 1 10 12 10 12 1 8 1 10 7 12 1 1 8 1 8 1 10 12 1 7 1 10 10 12 1 10 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1

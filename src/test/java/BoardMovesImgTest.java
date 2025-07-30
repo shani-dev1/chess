@@ -1,3 +1,8 @@
+import classes.Pair;
+import img.Img;
+import board.Board;
+import classes.Moves;
+import img.MockImg;
 import org.junit.jupiter.api.Test;
 import java.awt.*;
 import java.nio.file.Files;
@@ -44,7 +49,7 @@ public class BoardMovesImgTest {
         Moves mv = new Moves(filePath, 8, 8);
 
         // occupied set representation
-        Set<Moves.Pair> occupied = new HashSet<>();
+        Set<Pair> occupied = new HashSet<>();
         // capture move allowed only if dst_has_piece
         assertTrue(mv.isDstCellValid(1, 0, true));
         assertFalse(mv.isDstCellValid(1, 0, false));

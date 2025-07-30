@@ -1,4 +1,8 @@
+import game.Game;
+import game.GameFactory;
 import org.junit.jupiter.api.Test;
+import piece.Piece;
+
 import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
 

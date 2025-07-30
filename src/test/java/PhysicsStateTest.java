@@ -1,10 +1,20 @@
+import img.MockImg;
+import physics.IdlePhysics.IdlePhysics;
+import img.Img;
+import board.Board;
+import classes.Command;
+import classes.Pair;
+import classes.State;
+import grafix.Graphics;
 import org.junit.jupiter.api.Test;
+import physics.IdlePhysics.JumpPhysics;
+import physics.IdlePhysics.MovePhysics;
+import physics.IdlePhysics.RestPhysics;
+import piece.Piece;
+
 import java.awt.Dimension;
-import java.nio.file.Path;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
 
 public class PhysicsStateTest {
     /* helper */
@@ -27,7 +37,7 @@ public class PhysicsStateTest {
     @Test
     void testIdlePhysicsProperties() {
         Board b = board(8);
-        Physics.IdlePhysics phys = new Physics.IdlePhysics(b);
+        IdlePhysics phys = new IdlePhysics(b);
         Command cmd = new Command(0, "P", "idle", List.of(new Pair(2,3)));
         phys.reset(cmd);
         assertEquals(new Pair(2,3), phys.getCurrCell());
@@ -39,8 +49,8 @@ public class PhysicsStateTest {
     @Test
     void testMovePhysicsFullCycle() {
         Board b = board(8);
-        Physics.MovePhysics phys = new Physics.MovePhysics(b, 1.0); // 1 cell/sec
-        Command cmd = new Command(0, "P", "move", List.of(new Pair(0,0), new Moves.Pair(0,2)));
+        MovePhysics phys = new MovePhysics(b, 1.0); // 1 cell/sec
+        Command cmd = new Command(0, "P", "move", List.of(new Pair(0,0), new Pair(0,2)));
         phys.reset(cmd);
         assertNull(phys.update(1000));
         Command done = phys.update(2100);
@@ -53,8 +63,8 @@ public class PhysicsStateTest {
     @Test
     void testJumpAndRestPhysics() {
         Board b = board(8);
-        Physics.JumpPhysics jump = new Physics.JumpPhysics(b, 0.05);
-        Physics.RestPhysics rest = new Physics.RestPhysics(b, 0.05);
+        JumpPhysics jump = new JumpPhysics(b, 0.05);
+        RestPhysics rest = new RestPhysics(b, 0.05);
         Command start = new Command(0, "J", "jump", List.of(new Pair(1,1)));
         jump.reset(start);
         rest.reset(start);
@@ -70,8 +80,8 @@ public class PhysicsStateTest {
     @Test
     void testStateTransitionsViaInternalDone() {
         Board b = board(8);
-        Physics.IdlePhysics idlePhys = new Physics.IdlePhysics(b);
-        Physics.JumpPhysics jumpPhys = new Physics.JumpPhysics(b, 0.01);
+        IdlePhysics idlePhys = new IdlePhysics(b);
+        JumpPhysics jumpPhys = new JumpPhysics(b, 0.01);
         Graphics gfxIdle = graphics();
         Graphics gfxJump = graphics();
         State idle = new State(null, gfxIdle, idlePhys);

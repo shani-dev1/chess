@@ -1,4 +1,18 @@
+import img.MockImg;
+import physics.IdlePhysics.IdlePhysics;
+import img.Img;
+import board.Board;
+import classes.Pair;
+import grafix.GraphicsFactory;
 import org.junit.jupiter.api.Test;
+import physics.IdlePhysics.JumpPhysics;
+import physics.IdlePhysics.MovePhysics;
+import physics.IdlePhysics.RestPhysics;
+import physics.Physics;
+import physics.PhysicsFactory;
+import piece.Piece;
+import piece.PieceFactory;
+
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,21 +33,21 @@ public class FactoriesTest {
         Board b = board();
         PhysicsFactory pf = new PhysicsFactory(b);
 
-        Physics idle = pf.create(new Moves.Pair(0,0), "idle", new org.json.JSONObject());
-        assertTrue(idle instanceof Physics.IdlePhysics);
+        Physics idle = pf.create(new Pair(0,0), "idle", new org.json.JSONObject());
+        assertTrue(idle instanceof IdlePhysics);
 
         org.json.JSONObject moveCfg = new org.json.JSONObject().put("speed_m_per_sec", 2.0);
-        Physics move = pf.create(new Moves.Pair(0,0), "move", moveCfg);
-        assertTrue(move instanceof Physics.MovePhysics);
-        assertEquals(2.0, ((Physics.MovePhysics)move).getSpeedCellsPerSec());
+        Physics move = pf.create(new Pair(0,0), "move", moveCfg);
+        assertTrue(move instanceof MovePhysics);
+        assertEquals(2.0, ((MovePhysics)move).getSpeedCellsPerSec());
 
-        Physics jump = pf.create(new Moves.Pair(0,0), "jump", new org.json.JSONObject());
-        assertTrue(jump instanceof Physics.JumpPhysics);
+        Physics jump = pf.create(new Pair(0,0), "jump", new org.json.JSONObject());
+        assertTrue(jump instanceof JumpPhysics);
 
         org.json.JSONObject restCfg = new org.json.JSONObject().put("duration_ms", 500);
-        Physics rest = pf.create(new Moves.Pair(0,0), "long_rest", restCfg);
-        assertTrue(rest instanceof Physics.RestPhysics);
-        assertEquals(0.5, ((Physics.RestPhysics)rest).getDurationSec(), 1e-6);
+        Physics rest = pf.create(new Pair(0,0), "long_rest", restCfg);
+        assertTrue(rest instanceof RestPhysics);
+        assertEquals(0.5, ((RestPhysics)rest).getDurationSec(), 1e-6);
     }
 
     /* ---------------- PIECE FACTORY ---------------- */
@@ -52,7 +66,7 @@ public class FactoriesTest {
         for (String t: types) {
             for (String c: colors) {
                 String code = t + c;
-                Moves.Pair loc = new Moves.Pair(i, j);
+                Pair loc = new Pair(i, j);
                 Piece p = pFactory.createPiece(code, loc);
                 assertTrue(p.id.startsWith(code + "_"));
                 assertEquals(loc, p.currentCell());
