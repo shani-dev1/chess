@@ -27,7 +27,7 @@
 
 ---------------  S U M M A R Y ------------
 
-Command Line: -javaagent:C:\Users\This User\AppData\Local\Programs\IntelliJ IDEA Community Edition\lib\idea_rt.jar=58253 -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 MainGame
+classes.Command Line: -javaagent:C:\Users\This User\AppData\Local\Programs\IntelliJ IDEA Community Edition\lib\idea_rt.jar=58253 -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 MainGame
 
 Host: 13th Gen Intel(R) Core(TM) i7-1355U, 12 cores, 15G,  Windows 11 , 64 bit Build 22621 (10.0.22621.5415)
 Time: Mon Jul 28 02:35:58 2025  Windows 11 , 64 bit Build 22621 (10.0.22621.5415) elapsed time: 20.486838 seconds (0d 0h 0m 20s)
@@ -2659,7 +2659,7 @@ symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Us
 VM Arguments:
 jvm_args: -javaagent:C:\Users\This User\AppData\Local\Programs\IntelliJ IDEA Community Edition\lib\idea_rt.jar=58253 -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 
 java_command: MainGame
-java_class_path (initial): C:\Users\This User\Desktop\ôúøåï ùîåàì\CTD25_Solutions\KFC_java\target\classes;C:\Users\This User\.m2\repository\org\json\json\20220320\json-20220320.jar
+java_class_path (initial): C:\Users\This User\Desktop\ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½\CTD25_Solutions\KFC_java\target\classes;C:\Users\This User\.m2\repository\org\json\json\20220320\json-20220320.jar
 Launcher Type: SUN_STANDARD
 
 [Global flags]
