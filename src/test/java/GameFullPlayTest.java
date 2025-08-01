@@ -1,6 +1,7 @@
 import classes.Command;
 import classes.Moves;
 import classes.Pair;
+import enums.EState;
 import game.Game;
 import game.GameFactory;
 import org.junit.jupiter.api.Test;
@@ -35,15 +36,15 @@ public class GameFullPlayTest {
         Piece pw = game.pos.get(new Pair(6,0)).get(0);
         Piece pb = game.pos.get(new Pair(1,1)).get(0);
 
-        game.userInputQueue.add(new Command(game.game_time_ms(), pw.id, "move", java.util.List.of(new Pair(6,0), new Pair(4,0))));
-        game.userInputQueue.add(new Command(game.game_time_ms(), pb.id, "move", java.util.List.of(new Pair(1,1), new Pair(3,1))));
+        game.userInputQueue.add(new Command(game.game_time_ms(), pw.id, EState.MOVE, java.util.List.of(new Pair(6,0), new Pair(4,0))));
+        game.userInputQueue.add(new Command(game.game_time_ms(), pb.id, EState.MOVE, java.util.List.of(new Pair(1,1), new Pair(3,1))));
 
         runLoops(game, 200);
 
         assertEquals(new Pair(4,0), pw.currentCell());
         assertEquals(new Pair(3,1), pb.currentCell());
 
-        game.userInputQueue.add(new Command(game.game_time_ms(), pw.id, "move", java.util.List.of(new Pair(4,0), new Pair(3,1))));
+        game.userInputQueue.add(new Command(game.game_time_ms(), pw.id, EState.MOVE, java.util.List.of(new Pair(4,0), new Pair(3,1))));
         runLoops(game, 200);
 
         assertEquals(new Pair(3,1), pw.currentCell());

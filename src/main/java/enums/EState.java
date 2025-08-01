@@ -13,9 +13,9 @@ public enum EState {
     LONG_REST("long_rest", false, true),
     /** Short rest state, cannot perform actions, can move over. */
     SHORT_REST("short_rest", false, true),
+    /** Select state, can perform actions, can move over (for cursor). */
 
     DONE("done",true,true);
-
     private String name;
     private boolean canAction;
     private boolean canMoveOver;

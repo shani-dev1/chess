@@ -1,3 +1,4 @@
+import enums.EState;
 import img.MockImg;
 import classes.Command;
 import grafix.Graphics;
@@ -30,7 +31,7 @@ public class GraphicsTests {
         double fps = 10.0;
         int numFrames = 5;
         Graphics gfx = makeGraphics(true, fps, numFrames);
-        gfx.reset(new Command(0, "PX", "idle", java.util.List.of()));
+        gfx.reset(new Command(0, "PX", EState.IDLE, java.util.List.of()));
         double frameMs = 1000.0 / fps;
         for (int i=0;i<numFrames;i++) {
             gfx.update((long)(i*frameMs + frameMs/2));
@@ -44,7 +45,7 @@ public class GraphicsTests {
     @Test
     void testAnimationTimingNonLooping() {
         Graphics gfx = makeGraphics(false, 10.0, 3);
-        gfx.reset(new Command(0, "PX", "idle", java.util.List.of()));
+        gfx.reset(new Command(0, "PX", EState.IDLE, java.util.List.of()));
         gfx.update(1000); // far beyond animation duration
         assertEquals(2, gfx.getCurFrame()); // stick to last frame
     }
@@ -52,7 +53,7 @@ public class GraphicsTests {
     @Test
     void testEmptyFramesRaises() {
         Graphics gfx = makeGraphics(true, 10.0, 0);
-        gfx.reset(new Command(0, "PX", "idle", java.util.List.of()));
+        gfx.reset(new Command(0, "PX", EState.IDLE, java.util.List.of()));
         assertThrows(IllegalStateException.class, gfx::getImg);
     }
 } 

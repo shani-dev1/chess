@@ -1,3 +1,4 @@
+import enums.EState;
 import game.Game;
 import img.MockImg;
 import physics.IdlePhysics.IdlePhysics;
@@ -21,7 +22,7 @@ public class PieceStateGameTest {
     private static Img blankImg(int w, int h) {
         return new MockImg(w, h);
     }
-    private static Board board(int cells) {
+    static Board board(int cells) {
         int cellPx = 32;
         return new Board(cellPx, cellPx, cells, cells, blankImg(cells*cellPx, cells*cellPx));
     }
@@ -33,7 +34,7 @@ public class PieceStateGameTest {
             return new Graphics(tmpDir, new Dimension(32,32), false, 1.0);
         } catch(Exception e) { throw new RuntimeException(e); }
     }
-    private static Piece makePiece(String id, Pair cell, Board board) {
+    static Piece makePiece(String id, Pair cell, Board board) {
         IdlePhysics idlePhys = new IdlePhysics(board);
         MovePhysics movePhys = new MovePhysics(board, 1.0);
         JumpPhysics jumpPhys = new JumpPhysics(board, 0.1);
@@ -48,7 +49,7 @@ public class PieceStateGameTest {
         jump.setTransition("done", idle);
         Piece piece = new Piece(id, idle);
         piece.reset(0);
-        idle.reset(new Command(0, id, "idle", List.of(cell)));
+        idle.reset(new Command(0, id, EState.IDLE, List.of(cell)));
         return piece;
     }
 
@@ -58,11 +59,11 @@ public class PieceStateGameTest {
         Piece piece = makePiece("PX", new Pair(4,4), b);
         assertEquals("idle", piece.state.name);
         assertEquals(new Pair(4,4), piece.currentCell());
-        piece.onCommand(new Command(100, piece.id, "move", List.of(new Pair(4,4), new Pair(4,5))), null);
+        piece.onCommand(new Command(100, piece.id, EState.MOVE, List.of(new Pair(4,4), new Pair(4,5))), null);
         assertEquals("move", piece.state.name);
         piece.update(1200);
         assertEquals("idle", piece.state.name);
-        piece.onCommand(new Command(1300, piece.id, "jump", List.of(new Pair(4,4))), null);
+        piece.onCommand(new Command(1300, piece.id, EState.MOVE, List.of(new Pair(4,4))), null);
         assertEquals("jump", piece.state.name);
         piece.update(1500);
         assertEquals("idle", piece.state.name);
@@ -73,7 +74,7 @@ public class PieceStateGameTest {
         Board b = board(8);
         Piece piece = makePiece("PX", new Pair(4,4), b);
         assertTrue(piece.isMovementBlocker());
-        piece.onCommand(new Command(0, piece.id, "move", List.of(new Pair(4,4), new Pair(4,5))), null);
+        piece.onCommand(new Command(0, piece.id, EState.MOVE, List.of(new Pair(4,4), new Pair(4,5))), null);
         assertFalse(piece.isMovementBlocker());
     }
 
@@ -81,9 +82,9 @@ public class PieceStateGameTest {
     void testStateInvalidTransitions() {
         Board b = board(8);
         Piece piece = makePiece("PX", new Pair(4,4), b);
-        piece.onCommand(new Command(0, piece.id, "invalid", List.of()), null);
+        piece.onCommand(new Command(0, piece.id, EState.IDLE, List.of()), null);
         assertEquals("idle", piece.state.name);
-        piece.onCommand(new Command(0, piece.id, "move", List.of()), null);
+        piece.onCommand(new Command(0, piece.id, EState.MOVE, List.of()), null);
         assertEquals("idle", piece.state.name);
     }
 
@@ -121,7 +122,7 @@ public class PieceStateGameTest {
         Piece whiteKing = makePiece("KW_1", new Pair(7,4), b);
         Piece blackKing = makePiece("KB_1", new Pair(0,4), b);
         Game game = new Game(List.of(whiteKing, blackKing), b);
-        Command cmd = new Command(game.game_time_ms(), whiteKing.id, "move", List.of(new Pair(7,4), new Pair(6,4)));
+        Command cmd = new Command(game.game_time_ms(), whiteKing.id, EState.MOVE, List.of(new Pair(7,4), new Pair(6,4)));
         game.userInputQueue.add(cmd);
         game._update_cell2piece_map();
         while (!game.userInputQueue.isEmpty()) {
