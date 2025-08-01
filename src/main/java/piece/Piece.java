@@ -89,4 +89,8 @@ public class Piece {
     public Pair currentCell() {
         return state.physics.getCurrCell();
     }
+
+    public String getId() {
+        return id;
+    }
 }

@@ -90,7 +90,6 @@ public class BuffImg implements Img {
     @Override
     public void drawOn(Img other, int x, int y) {
         // Draws this image onto another image at position (x, y)
-        System.out.printf("x    " + x + "y" + y);
         if (img == null || other.get() == null)
             throw new IllegalStateException("Both images must be loaded.");
 

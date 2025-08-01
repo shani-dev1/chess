@@ -1,5 +1,6 @@
 import game.Game;
 import game.GameFactory;
+import ui.GameWindow;
 
 import java.net.URI;
 import java.nio.file.Path;
@@ -11,6 +12,11 @@ public class MainGame {
         URI uri = cl.getResource("pieces").toURI();
         Path piecesPath = Paths.get(uri);
         Game game = GameFactory.createGame(piecesPath);
-        game.run();
+
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            new GameWindow(game);
+        });
+
+        new Thread(game::run).start();
     }
 }

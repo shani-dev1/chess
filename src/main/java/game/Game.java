@@ -8,12 +8,14 @@ import keyBoard.KeyboardProducer;
 import piece.Piece;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Game extends Container {
+
     // Custom exception to indicate the board setup is invalid
     public static class InvalidBoard extends RuntimeException {}
 
@@ -24,7 +26,7 @@ public class Game extends Container {
     public Board board;
 
     // A clone of the board used for drawing/updating visuals separately
-    Board curr_board = null;
+    public Board curr_board = null;
 
     // Game start time in nanoseconds (used for timing game events)
     private final long startNs;
@@ -46,19 +48,24 @@ public class Game extends Container {
     public String selected_id_2 = null;
 
     // Keyboard input processors for two players
-    private KeyboardProcessor kp1, kp2;
+    public KeyboardProcessor kp1;
+    public KeyboardProcessor kp2;
+
+    // נוסיף בתוך Game
+    private boolean waitingForTarget1 = false;
+    private boolean waitingForTarget2 = false;
 
     // Keyboard input producers for two players (threads generating commands)
     private KeyboardProducer kbProd1, kbProd2;
 
     // Constructor to initialize the game with pieces and a board
     public Game(List<Piece> pieces, Board board) {
-        if (!validate(pieces)) throw new InvalidBoard();  // Validate board setup
+        if (!validate(pieces)) throw new InvalidBoard(); // Validate board setup
         this.pieces = new ArrayList<>(pieces);
         this.board = board;
-        this.startNs = System.nanoTime();  // Record game start time
-        for (Piece p : pieces) pieceById.put(p.id, p);  // Map pieces by their IDs
-        this.curr_board = board.cloneBoard();           // Clone the board for drawing
+        this.startNs = System.nanoTime(); // Record game start time
+        for (Piece p : pieces) pieceById.put(p.id, p); // Map pieces by their IDs
+        this.curr_board = board.cloneBoard(); // Clone the board for drawing
     }
 
     // Validate the initial pieces setup:
@@ -75,10 +82,10 @@ public class Game extends Container {
                 return false; // Found duplicate piece of same side on cell
             }
             occupantSide.put(cell, side);
-            if (p.id.startsWith("KW")) wKing = true;  // Check for white king
-            if (p.id.startsWith("KB")) bKing = true;  // Check for black king
+            if (p.id.startsWith("KW")) wKing = true; // Check for white king
+            if (p.id.startsWith("KB")) bKing = true; // Check for black king
         }
-        return wKing && bKing;  // Valid only if both kings present
+        return wKing && bKing; // Valid only if both kings present
     }
 
     public Board clone_board() {
@@ -96,6 +103,7 @@ public class Game extends Container {
     }
 
     /* ---------------- win detection --------------- */
+
     // Check if the game is won: win when fewer than 2 kings remain on board
     public boolean _is_win() {
         long kings = pieces.stream()
@@ -105,12 +113,14 @@ public class Game extends Container {
     }
 
     /* ---------------- simplified game loop (no graphics) ------------ */
+
     // Runs the main game loop for numIterations (0 = infinite)
     // If withGraphics=true, it would update visuals (code commented out here)
     public void _run_game_loop(int numIterations, boolean withGraphics) {
         int counter = 0;
-        this._draw();  // Draw initial state
-        this._show();  // Show initial board
+
+        // this._draw(); // Draw initial state
+        // this._show(); // Show initial board
 
         while (!_is_win()) {
             long now = game_time_ms();
@@ -130,10 +140,10 @@ public class Game extends Container {
             }
 
             // grafix.Graphics update (commented out here)
-//            if (withGraphics) {
-//                this._drow();
-//                this._show();
-//            }
+            // if (withGraphics) {
+            // this._drow();
+            // this._show();
+            // }
 
             // Handle collisions and piece captures on the board
             _resolve_collisions();
@@ -153,12 +163,12 @@ public class Game extends Container {
         }
     }
 
-    // Process a single input command affecting pieces on the board
-    public void _process_input(Command cmd) {
-        Piece mover = pieceById.get(cmd.pieceId);
-        if (mover == null) return; // Ignore commands for non-existing pieces
-        mover.onCommand(cmd, pos);
-    }
+     public void _process_input(Command cmd) {
+         Piece mover = pieceById.get(cmd.pieceId);
+         if (mover == null) return;
+         mover.onCommand(cmd, pos);
+     }
+
 
     // Resolve collisions: if multiple pieces occupy the same cell,
     // only the "winner" (most recent mover) remains, others removed if capturable
@@ -186,35 +196,61 @@ public class Game extends Container {
     }
 
     /* ---------------- keyboard helpers ---------------- */
-    // Starts threads that listen for keyboard input from two players
+
     public void startUserInputThread() {
-        // Key mappings for player 1
         Map<String, String> p1Map = Map.of(
                 "up", "up", "down", "down", "left", "left", "right", "right",
                 "enter", "select", "+", "jump"
         );
-        // Key mappings for player 2
         Map<String, String> p2Map = Map.of(
                 "w", "up", "s", "down", "a", "left", "d", "right",
                 "f", "select", "g", "jump"
         );
+        Map<Integer, Piece>[][] boardState = createBoardState();
 
-        // Create keyboard processors for both players
-        kp1 = new KeyboardProcessor(board.getHCells(), board.getWCells(), p1Map);
-        kp2 = new KeyboardProcessor(board.getHCells(), board.getWCells(), p2Map);
+        kp1 = new KeyboardProcessor(board.getHCells(), board.getWCells(), p1Map, userInputQueue, boardState);
+        kp2 = new KeyboardProcessor(board.getHCells(), board.getWCells(), p2Map, userInputQueue, boardState);
 
-        kp1.setCursor(0, board.getWCells() - 1);
+        kp1.setCursor(1, 0, board.getWCells() - 1);
+        kp2.setCursor(2, board.getHCells() - 1, 0);
 
-        kp2.setCursor(board.getHCells() - 1, 0);
-
-        // Create producers that will read input and push commands into the queue
         kbProd1 = new KeyboardProducer(this, userInputQueue, kp1, 1);
         kbProd2 = new KeyboardProducer(this, userInputQueue, kp2, 2);
 
-        // Start the input threads
         kbProd1.start();
         kbProd2.start();
     }
+
+
+//    // Starts threads that listen for keyboard input from two players
+//    public void startUserInputThread() {
+//        // Key mappings for player 1
+//        Map<String, String> p1Map = Map.of(
+//                "up", "up", "down", "down", "left", "left", "right", "right",
+//                "enter", "select", "+", "jump"
+//        );
+//
+//        // Key mappings for player 2
+//        Map<String, String> p2Map = Map.of(
+//                "w", "up", "s", "down", "a", "left", "d", "right",
+//                "f", "select", "g", "jump"
+//        );
+//
+//        // Create keyboard processors for both players
+//        kp1 = new KeyboardProcessor(board.getHCells(), board.getWCells(), p1Map);
+//        kp2 = new KeyboardProcessor(board.getHCells(), board.getWCells(), p2Map);
+//
+//        kp1.setCursor(0, board.getWCells() - 1);
+//        kp2.setCursor(board.getHCells() - 1, 0);
+//
+//        // Create producers that will read input and push commands into the queue
+//        kbProd1 = new KeyboardProducer(this, userInputQueue, kp1, 1);
+//        kbProd2 = new KeyboardProducer(this, userInputQueue, kp2, 2);
+//
+//        // Start the input threads
+//        kbProd1.start();
+//        kbProd2.start();
+//    }
 
     // Announces which player won based on remaining kings
     private void _announce_win() {
@@ -249,49 +285,76 @@ public class Game extends Container {
 
         // Announce winner and stop input threads
         _announce_win();
+
         if (kbProd1 != null) kbProd1.stopProducer();
         if (kbProd2 != null) kbProd2.stopProducer();
     }
 
     // Draw current game state on the cloned board
-    private void _draw() {
+    public void _draw() {
         curr_board.getImg();
 
         for (Piece p : pieces) {
             p.drawOnBoard(curr_board, game_time_ms());
         }
 
-        drawCursors();
+        // drawCursors();
     }
 
-    private void drawCursors(){
+    // private void drawCursors() {
+    //     // Draw cursor for player 1 (green)
+    //     int[] cursor1 = kp1.getCursor();
+    //     int y1 = cursor1[0] * board.getCellHPix();
+    //     int x1 = cursor1[1] * board.getCellWPix();
+    //     int y2 = y1 + board.getCellHPix() - 1;
+    //     int x2 = x1 + board.getCellWPix() - 1;
+    //     curr_board.getImg().drawRect(x1, y1, x2, y2, Color.GREEN);
+    //
+    //     // Draw cursor for player 2 (red)
+    //     int[] cursor2 = kp2.getCursor();
+    //     y1 = cursor2[0] * board.getCellHPix();
+    //     x1 = cursor2[1] * board.getCellWPix();
+    //     y2 = y1 + board.getCellHPix() - 1;
+    //     x2 = x1 + board.getCellWPix() - 1;
+    //     curr_board.getImg().drawRect(x1, y1, x2, y2, Color.RED);
+    // }
 
-        // Draw cursor for player 1 (green)
-        int[] cursor1 = kp1.getCursor();
-        int y1 = cursor1[0] * board.getCellHPix();
-        int x1 = cursor1[1] * board.getCellWPix();
-        int y2 = y1 + board.getCellHPix() - 1;
-        int x2 = x1 + board.getCellWPix() - 1;
-        curr_board.getImg().drawRect(x1, y1, x2, y2, Color.GREEN);
-
-        // Draw cursor for player 2 (red)
-        int[] cursor2 = kp2.getCursor();
-        y1 = cursor2[0] * board.getCellHPix();
-        x1 = cursor2[1] * board.getCellWPix();
-        y2 = y1 + board.getCellHPix() - 1;
-        x2 = x1 + board.getCellWPix() - 1;
-        curr_board.getImg().drawRect(x1, y1, x2, y2, Color.RED);
-    }
-
-    public void _show() {
-        if (curr_board != null) {
-            this.curr_board.show();
-        }
-    }
+    // public void _show() {
+    //     if (curr_board != null) {
+    //         this.curr_board.show();
+    //     }
+    // }
 
     public List<Piece> getPieces() {
         return pieces;
     }
 
-}
+    public BufferedImage getCurrentBoardImage() {
+        _draw();
+        return curr_board.getImg().get();
+    }
 
+    @SuppressWarnings("unchecked")
+    private Map<Integer, Piece>[][] createBoardState() {
+        int rows = board.getHCells();
+        int cols = board.getWCells();
+        Map<Integer, Piece>[][] boardState = new Map[rows][cols];
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                boardState[r][c] = new HashMap<>();
+            }
+        }
+
+        // מלא את המצב עם הכלים על הלוח
+        for (Piece p : pieces) {
+            Pair cell = p.currentCell();
+            int x = cell.r;
+            int y = cell.c;
+
+            int player = (p.id.charAt(1) == 'W') ? 1 : 2;
+            boardState[x][y].put(player, p);
+        }
+        return boardState;
+    }
+
+}

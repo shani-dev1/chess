@@ -1,3 +1,4 @@
+import enums.EState;
 import img.MockImg;
 import physics.IdlePhysics.IdlePhysics;
 import img.Img;
@@ -38,7 +39,7 @@ public class PhysicsStateTest {
     void testIdlePhysicsProperties() {
         Board b = board(8);
         IdlePhysics phys = new IdlePhysics(b);
-        Command cmd = new Command(0, "P", "idle", List.of(new Pair(2,3)));
+        Command cmd = new Command(0, "P", EState.IDLE, List.of(new Pair(2,3)));
         phys.reset(cmd);
         assertEquals(new Pair(2,3), phys.getCurrCell());
         assertNull(phys.update(100));
@@ -50,7 +51,7 @@ public class PhysicsStateTest {
     void testMovePhysicsFullCycle() {
         Board b = board(8);
         MovePhysics phys = new MovePhysics(b, 1.0); // 1 cell/sec
-        Command cmd = new Command(0, "P", "move", List.of(new Pair(0,0), new Pair(0,2)));
+        Command cmd = new Command(0, "P", EState.MOVE, List.of(new Pair(0,0), new Pair(0,2)));
         phys.reset(cmd);
         assertNull(phys.update(1000));
         Command done = phys.update(2100);
@@ -65,7 +66,7 @@ public class PhysicsStateTest {
         Board b = board(8);
         JumpPhysics jump = new JumpPhysics(b, 0.05);
         RestPhysics rest = new RestPhysics(b, 0.05);
-        Command start = new Command(0, "J", "jump", List.of(new Pair(1,1)));
+        Command start = new Command(0, "J", EState.JUMP, List.of(new Pair(1,1)));
         jump.reset(start);
         rest.reset(start);
         assertNull(jump.update(20));
@@ -90,7 +91,7 @@ public class PhysicsStateTest {
         idle.setTransition("jump", jump);
         jump.setTransition("done", idle);
         Piece piece = new Piece("PX", idle);
-        piece.onCommand(new Command(0, piece.id, "jump", List.of(new Pair(0,0))), null);
+        piece.onCommand(new Command(0, piece.id, EState.JUMP, List.of(new Pair(0,0))), null);
         assertSame(jump, piece.state);
         piece.update(20);
         assertSame(idle, piece.state);
